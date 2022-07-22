@@ -1,11 +1,20 @@
 import os
+from datetime import date
+from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request
 from certificate import config
+from certificate.csv_reading import read_csv
+from certificate.database import find_user, save_data
 from certificate.generator import generate 
 # from certificate.config import file_mb_max, upload_dest, extensions
 # from templates import upload
 app = Flask(__name__)
-
+ 
+# Use load_env to trace the path of .env:
+load_dotenv('.env') 
+ 
+# Get the values of the variables from .env using the os library:
+BASE_URL = os.environ.get("DOMAIN")
 if not os.path.isdir(config.upload_dest):
     os.mkdir(config.upload_dest)
 
@@ -20,6 +29,19 @@ def allowed_file(filename):
 def upload_post():
     if request.method == 'POST':
         # csv = request.files["csv"]
+        name = request.form.get('name')
+        certificate_id = request.form.get('certificateId')
+        print(certificate_id,name)
+        
+        img_file = request.files["image"]
+        # for img_file in files:
+        if img_file and allowed_file(img_file.filename):
+            # filename = secure_filename(img_file.filename)
+            #print(img_file.filename)
+            img_file.save(os.path.join(config.upload_dest, img_file.filename)) 
+            #print(type(os.path.join( config.upload_dest, img_file.filename)))
+            # val = generate(os.path.join( config.upload_dest, img_file.filename), ['manish','prince'],['H2S0SSDS00001','H2S0SSDS00002'],config.upload_dest)
+            # print(val)
         if 'csv' not in request.files:
             # flash('No files found, try again.')
             return redirect(request.url)    
@@ -28,18 +50,26 @@ def upload_post():
         # for csv_file in files:
         if csv_file and allowed_file(csv_file.filename):
             # filename = secure_filename(csv_file.filename)
-            print(csv_file.filename)
-            csv_file.save(os.path.join( config.upload_dest, csv_file.filename))    
+            #print(csv_file.filename)
+            csv_file.save(os.path.join( config.upload_dest, csv_file.filename))  
+            data = read_csv(os.path.join(config.upload_dest, csv_file.filename))
+            for i in range(1,len(data)):
+                # print(data[i])
+                user = dict()
+                for j in range(len(data[0])):
+                    user[data[0][j]] = data[i][j]
+
+                #print(user)
+                cert_id = user['certificate_id']
+                print(BASE_URL,cert_id)
+                user['certificate_link'] = f'{BASE_URL}/api/{cert_id}'
+                # Returns the current local date
+                today = date.today()
+                user['date_of_issue'] = str(today)
+                saved_data = save_data(user)
+                print(saved_data)
+
             # flash('File(s) uploaded')
-        img_file = request.files["image"]
-        # for img_file in files:
-        if img_file and allowed_file(img_file.filename):
-            # filename = secure_filename(img_file.filename)
-            print(img_file.filename)
-            img_file.save(os.path.join( config.upload_dest, img_file.filename)) 
-            #print(type(os.path.join( config.upload_dest, img_file.filename)))
-            val = generate(os.path.join( config.upload_dest, img_file.filename), ['manish','prince'],['H2S0SSDS00001','H2S0SSDS00002'],config.upload_dest)
-            print(val)
         return redirect('/')
         # image = request.form.get("image")
         # print("hi",csv)
@@ -56,6 +86,14 @@ def upload_post():
 
 #         return redirect("/generate")
 #     return render_template("generate.html")
+@app.route('/api/<certificate_id>')
+def show_image(certificate_id):
+    name = find_user(certificate_id)
+    value = generate("uploads_folder\industrial-visit-iitb.png", name, certificate_id)
+    print(value)
+    
+    return(certificate_id)
+    
 def server():
     app.run(debug=True)
 

@@ -1,6 +1,15 @@
 <form action="" method="POST" enctype="multipart/form-data">
-    <input type="file" name= "csv" accept=".csv" required>
     <input type="file" name= "image" accept=".jpg, .png, .jpeg" required>
+    <div>
+        <input type="checkbox" name="name">
+        Name
+    </div>
+    <br/>
+    <div>
+        <input type="checkbox" name="certificateId">
+        Certificate Id
+    </div>
+    <input type="file" name= "csv" accept=".csv" required>
     <button type="submit">Submit</button>
 
 </form>
