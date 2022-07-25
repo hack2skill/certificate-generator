@@ -89,7 +89,7 @@ def upload_post():
 @app.route('/api/<certificate_id>')
 def show_image(certificate_id):
     name = find_user(certificate_id)
-    value = generate("uploads_folder\industrial-visit-iitb.png", name, certificate_id)
+    value = generate("uploads_folder/advanced_and_p2e.jpg", name, certificate_id, name_origin_coordinates = (650, 2650), certificate_id_origin_coordinates = (2100, 3600))
     print(value)
     
     return(certificate_id)

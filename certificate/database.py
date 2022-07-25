@@ -19,5 +19,7 @@ def save_data(data):
     return saved_user
 
 def find_user(certificate_id):
-    found_user = user.find_one({ certificate_id: certificate_id})
-    return found_user.name
+    print(certificate_id)
+    found_user = user.find_one({ "certificate_id": certificate_id})
+    print(found_user)
+    return found_user['name']
