@@ -23,29 +23,32 @@
             <br/>
             <hr/>
             <div  class="variable__list">
+                <form>
                 <div class="heading">Upload CSV FILE:</div>
-                <div class="my-3"><input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" /></div>
+                <div class="my-3"><input onchange="uploadCsv(this)" id="csvSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" /></div>
+                <button type="submit" id="submitCsv" style="display: none;">submit</button>    
+                </form>
             </div>
             <hr/>
             <div  class="variable__list">
                 <div class="heading">Customize Text:</div>
                 <br/>
                 <h5>Select Font:</h5>
-                <select>
+                <select id="font">
                     <option>Poppins</option>
                     <option>Roberto</option>
                     <option>Arial</option>
                 </select>
                 <br/>
                 <h5>Set Alignment:</h5>
-                <select>
+                <select id="align">
                     <option>Left</option>
                     <option>Right</option>
                     <option>Center</option>
                 </select>
             </div>
             <div>
-                <button class="genCertificates">Genrate Certificates</button>
+                <button class="genCertificates" onclick="handleSubmit()">Genrate Certificates</button>
             </div>
         </div>
         <div class="right">
@@ -54,7 +57,7 @@
                 <div id="drop-area" >
                     <form action="" method="POST" enctype="multipart/form-data">
                         <input type="file" id="fileElem"accept="image/*" onchange="handleFiles(this.files)">
-                        <label class="button" for="fileElem">Darg or Click to Upload Certificate Image to get Started.</label>
+                        <label class="button" for="fileElem">Darg or Click to Upload Certificate <strong>Image to get Started.</strong></label>
                     </form>
                 </div>
             </div>
@@ -72,6 +75,34 @@
 
 
     <!-- Javascript -->
+    <script>
+        const uploadCsv =(e)=>{
+            document.getElementById('submitCsv').click();
+        }
+        const handleSubmit=()=>{
+            let nameLeft, nameTop, certLeft,certTop;
+            console.log(document.getElementById('cert').getBoundingClientRect().left)
+            if(document.getElementById('nameVariable')){
+                nameLeft = document.getElementById('nameVariable').getBoundingClientRect().left - document.getElementById('cert').getBoundingClientRect().left;
+                nameTop = document.getElementById('nameVariable').getBoundingClientRect().top - document.getElementById('cert').getBoundingClientRect().top;
+            }
+            if(document.getElementById('certVariable')){
+                certLeft = document.getElementById('certVariable').getBoundingClientRect().left - document.getElementById('cert').getBoundingClientRect().left;
+                certTop = document.getElementById('certVariable').getBoundingClientRect().top - document.getElementById('cert').getBoundingClientRect().top;
+            }
+
+            let submitObject ={
+                font: document.getElementById('font').value,
+                align: document.getElementById('align').value,
+                nameLeft: nameLeft,
+                nameTop: nameTop,
+                certLeft: certLeft,
+                certTop: certTop
+            }
+            JSON.stringify(submitObject);
+            console.log(submitObject);
+        }
+    </script>
     <script>
         const setNameImage= ()=>{
 
