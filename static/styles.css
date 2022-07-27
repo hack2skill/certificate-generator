@@ -121,6 +121,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: gray;
 }
 
 #nameVariable img,
@@ -172,6 +173,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 0;
 }
 
 .removevariable {
@@ -186,6 +188,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 0;
 }
 
 .my-3 {
@@ -199,4 +202,37 @@ p {
     border: 0;
     border-radius: 5px;
     cursor: pointer;
+}
+
+#overlay {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(7, 7, 7);
+    opacity: 20%;
+    display: none;
+    z-index: 20;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#modal {
+    width: 500px;
+    height: 200px;
+    background-color: white;
+    z-index: 30;
+    position: absolute;
+    top: 35%;
+    left: 35%;
+    display: none;
+    border-radius: 20px;
+    padding: 20px;
+    flex-direction: column;
+
+}
+
+#csvForm {
+    display: flex;
+    flex-direction: column;
+    gap: 3;
 }

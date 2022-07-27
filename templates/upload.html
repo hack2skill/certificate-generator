@@ -21,14 +21,7 @@
                 <button class="setvariable" id="certButton"  onclick="setCertImage()" disabled><i class="fa-solid fa-circle-plus"></i> &nbsp; Add Certificate ID</button>
             </div>
             <br/>
-            <hr/>
-            <div  class="variable__list">
-                <form>
-                <div class="heading">Upload CSV FILE:</div>
-                <div class="my-3"><input onchange="uploadCsv(this)" id="csvSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" /></div>
-                <button type="submit" id="submitCsv" style="display: none;">submit</button>    
-                </form>
-            </div>
+            
             <hr/>
             <div  class="variable__list">
                 <div class="heading">Customize Text:</div>
@@ -48,7 +41,7 @@
                 </select>
             </div>
             <div>
-                <button class="genCertificates" onclick="handleSubmit()">Genrate Certificates</button>
+                <button class="genCertificates" onclick="handleSubmit()">Upload Template</button>
             </div>
         </div>
         <div class="right">
@@ -67,6 +60,17 @@
             <div class="csv__uploader"></div>
         </div>
     </div>
+    <div id="overlay">  </div>
+    <div id="modal"> 
+        <div style="margin-bottom: 20px;"><h4>Upload your Csv:</h4></div>
+        <div>
+            <form id="csvForm" >
+                <input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                <button type="submit" class="genCertificates" style="margin: 20px;">Generate Certificates</button>
+            </form>
+        </div>
+    </div>
+    
 
 
 
@@ -76,8 +80,8 @@
 
     <!-- Javascript -->
     <script>
-        const uploadCsv =(e)=>{
-            document.getElementById('submitCsv').click();
+        const closeModal =() =>{
+            document.getElementById('overlay').style.display='none';
         }
         const handleSubmit=()=>{
             let nameLeft, nameTop, certLeft,certTop;
@@ -101,6 +105,8 @@
             }
             JSON.stringify(submitObject);
             console.log(submitObject);
+            document.getElementById('overlay').style.display ="flex";
+            document.getElementById('modal').style.display ="flex";
         }
     </script>
     <script>
