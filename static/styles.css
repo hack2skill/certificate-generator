@@ -236,3 +236,31 @@ p {
     flex-direction: column;
     gap: 3;
 }
+
+.createVariable {
+    color: rgb(105, 105, 205);
+    border-color: rgb(105, 105, 205);
+    background-color: white;
+    border: 1px solid;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.createVariable:hover {
+    background-color: rgb(105, 105, 205);
+    color: white;
+}
+
+.variable {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    min-height: 20px;
+    min-width: 100px;
+    width: fit-content;
+    background-color: white;
+    overflow: auto;
+    resize: both;
+}

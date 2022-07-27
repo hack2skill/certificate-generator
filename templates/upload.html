@@ -17,8 +17,10 @@
             <div class="branding"><a href="https://hack2skill.com"><img class="brandlogo" src="../static/logo.png"/></a></div>
             <div class="heading">Action Panel</div>
             <div class="variable__list">
-                <button class="setvariable" id="nameButton" onclick="setNameImage()" disabled><i class="fa-solid fa-circle-plus"></i> &nbsp; Add Name</button>
-                <button class="setvariable" id="certButton"  onclick="setCertImage()" disabled><i class="fa-solid fa-circle-plus"></i> &nbsp; Add Certificate ID</button>
+                <button class="createVariable" onclick="createVariable()">Create Variable &nbsp; <i class="fa-solid fa-circle-plus"></i></button>
+
+                <!-- <button class="setvariable" id="nameButton" onclick="setNameImage()" disabled><i class="fa-solid fa-circle-plus"></i> &nbsp; Add Name</button>
+                <button class="setvariable" id="certButton"  onclick="setCertImage()" disabled><i class="fa-solid fa-circle-plus"></i> &nbsp; Add Certificate ID</button> -->
             </div>
             <br/>
             
@@ -79,6 +81,28 @@
 
 
     <!-- Javascript -->
+    <script>
+        const createVariable =()=>{
+            let variable = document.createElement('input');
+        variable.classList.add('variable');
+        variable.addEventListener("mousedown",()=>{
+            variable.addEventListener("mousemove",onDrag);
+            })
+            document.addEventListener("mouseup",()=>{
+            variable.removeEventListener("mousemove",onDrag);
+            })
+            document.getElementById('gallery').appendChild(variable);
+
+            // On Drag Function
+            function onDrag(e){
+                let getStyle= window.getComputedStyle(variable);
+                let left = parseInt(getStyle.left);
+                let top = parseInt(getStyle.top);
+                variable.style.left = `${(e.movementX +left)}px`;
+                variable.style.top = `${(top + e.movementY)}px`;
+            }
+        }
+    </script>
     <script>
         const closeModal =() =>{
             document.getElementById('overlay').style.display='none';
