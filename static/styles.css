@@ -77,12 +77,63 @@ p {
     width: 100%;
     vertical-align: middle;
     position: absolute;
+    pointer-events: none;
+    user-select: none;
 }
 
-#nameVariable {
+#nameVariable,
+#certVariable {
     z-index: 2;
     position: absolute;
     width: 200px;
+    height: 30px;
+    padding: 2px 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 40%;
+    border: 1px solid rgb(182, 181, 181);
+    border-radius: 5px;
+    resize: both;
+    overflow: auto;
+}
+
+#nameVariable::-webkit-scrollbar,
+#certVariable::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#nameVariable,
+#certVariable {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#nameMove,
+#certMove {
+    width: 5%;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#nameVariable img,
+#certVariable img {
+    width: 95%;
+    pointer-events: none;
+    user-select: none;
+}
+
+#certVariable {
+    z-index: 2;
+    position: absolute;
+    width: 150px;
     top: 50%;
     left: 40%;
 }
@@ -106,18 +157,52 @@ p {
     flex-direction: column;
     gap: 5px;
     padding: 10px;
+    margin-bottom: 20px;
 }
 
-.variable:hover {
+.setvariable :hover,
+.removevariable :hover {
 
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
-.variable {
+.setvariable {
     margin: 5px;
-    padding: 5px 25px;
-    border-radius: 20px;
+    padding: 8px 25px;
+    border-radius: 5px;
     font-weight: 500;
     cursor: pointer;
-    border: 0.5px solid rgb(182, 181, 181);
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.removevariable {
+    margin: 5px;
+    padding: 8px 25px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-3 {
+    margin: 3px 0px;
+}
+
+.genCertificates {
+    background-color: rgb(105, 105, 205);
+    color: white;
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
 }

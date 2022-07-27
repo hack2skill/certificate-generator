@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="container">
@@ -16,8 +17,35 @@
             <div class="branding"><a href="https://hack2skill.com"><img class="brandlogo" src="../static/logo.png"/></a></div>
             <div class="heading">Action Panel</div>
             <div class="variable__list">
-                <div class="variable" onclick="setImage()">Name</div>
-                <div class="variable">Certificate ID</div>
+                <button class="setvariable" id="nameButton" onclick="setNameImage()" disabled><i class="fa-solid fa-circle-plus"></i> &nbsp; Add Name</button>
+                <button class="setvariable" id="certButton"  onclick="setCertImage()" disabled><i class="fa-solid fa-circle-plus"></i> &nbsp; Add Certificate ID</button>
+            </div>
+            <br/>
+            <hr/>
+            <div  class="variable__list">
+                <div class="heading">Upload CSV FILE:</div>
+                <div class="my-3"><input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" /></div>
+            </div>
+            <hr/>
+            <div  class="variable__list">
+                <div class="heading">Customize Text:</div>
+                <br/>
+                <h5>Select Font:</h5>
+                <select>
+                    <option>Poppins</option>
+                    <option>Roberto</option>
+                    <option>Arial</option>
+                </select>
+                <br/>
+                <h5>Set Alignment:</h5>
+                <select>
+                    <option>Left</option>
+                    <option>Right</option>
+                    <option>Center</option>
+                </select>
+            </div>
+            <div>
+                <button class="genCertificates">Genrate Certificates</button>
             </div>
         </div>
         <div class="right">
@@ -26,7 +54,7 @@
                 <div id="drop-area" >
                     <form action="" method="POST" enctype="multipart/form-data">
                         <input type="file" id="fileElem"accept="image/*" onchange="handleFiles(this.files)">
-                        <label class="button" for="fileElem">Darg or Click to Upload files.</label>
+                        <label class="button" for="fileElem">Darg or Click to Upload Certificate Image to get Started.</label>
                     </form>
                 </div>
             </div>
@@ -45,19 +73,108 @@
 
     <!-- Javascript -->
     <script>
-        const setImage= ()=>{
+        const setNameImage= ()=>{
+
+            // adding Dragable, Scaleable name image
+            let img_Div = document.createElement('div');
+            let moveable_Div = document.createElement('div')
             let img = document.createElement('img');
             img.src = '../static/name.png';
-            img.id ='nameVariable'
-            document.getElementById('gallery').appendChild(img);
+            img_Div.id ='nameVariable';
+            moveable_Div.id ='nameMove';
+            moveable_Div.innerHTML='<i class="fa-solid fa-grip-lines-vertical"></i>';
+            img_Div.appendChild(moveable_Div);
+            img_Div.appendChild(img);
+
+            moveable_Div.addEventListener("mousedown",()=>{
+            moveable_Div.addEventListener("mousemove",onDrag);
+            })
+            document.addEventListener("mouseup",()=>{
+            moveable_Div.removeEventListener("mousemove",onDrag);
+            })
+            document.getElementById('gallery').appendChild(img_Div);
+
+            // On Drag Function
+            function onDrag(e){
+                let getStyle= window.getComputedStyle(img_Div);
+                let left = parseInt(getStyle.left);
+                let top = parseInt(getStyle.top);
+                img_Div.style.left = `${(e.movementX +left)}px`;
+                img_Div.style.top = `${(top + e.movementY)}px`;
+            }
+            document.getElementById('nameButton').classList.remove('setvariable');
+            document.getElementById('nameButton').classList.add('removevariable');
+            document.getElementById('nameButton').innerHTML = '<i class="fa-solid fa-circle-minus"></i> &nbsp; Remove Name';
+            document.getElementById('nameButton').onclick = function() { removeNameImg() };
         }
+
+        const removeNameImg =() =>{
+           const img_Div=  document.getElementById('nameVariable');
+            document.getElementById('gallery').removeChild(img_Div);
+            document.getElementById('nameButton').onclick = function() { setNameImage() };
+            document.getElementById('nameButton').classList.add('setvariable');
+            document.getElementById('nameButton').classList.remove('removevariable');
+            document.getElementById('nameButton').innerHTML ='<i class="fa-solid fa-circle-plus"></i> &nbsp; Add Name';
+        }
+        
+    </script>
+    <script>
+        const setCertImage= ()=>{
+
+            // adding Dragable, Scaleable name image
+            let img_Div = document.createElement('div');
+            let moveable_Div = document.createElement('div')
+            let img = document.createElement('img');
+            img.src = '../static/cert.png';
+            img_Div.id ='certVariable';
+            moveable_Div.id ='certMove';
+            moveable_Div.innerHTML='<i class="fa-solid fa-grip-lines-vertical"></i>';
+            img_Div.appendChild(moveable_Div);
+            img_Div.appendChild(img);
+
+            moveable_Div.addEventListener("mousedown",()=>{
+            moveable_Div.addEventListener("mousemove",onDrag);
+            })
+            document.addEventListener("mouseup",()=>{
+            moveable_Div.removeEventListener("mousemove",onDrag);
+            })
+            document.getElementById('gallery').appendChild(img_Div);
+
+            // On Drag Function
+            function onDrag(e){
+                let getStyle= window.getComputedStyle(img_Div);
+                let left = parseInt(getStyle.left);
+                let top = parseInt(getStyle.top);
+                img_Div.style.left = `${(e.movementX +left)}px`;
+                img_Div.style.top = `${(top + e.movementY)}px`;
+            }
+            document.getElementById('certButton').classList.remove('setvariable');
+            document.getElementById('certButton').classList.add('removevariable');
+            document.getElementById('certButton').innerHTML = '<i class="fa-solid fa-circle-minus"></i> &nbsp; Remove ID';
+            document.getElementById('certButton').onclick = function() { removeCertImg() };
+        }
+
+        const removeCertImg =() =>{
+            document.getElementById('certVariable').remove();
+            document.getElementById('certButton').onclick = function() { setCertImage() };
+            document.getElementById('certButton').classList.add('setvariable');
+            document.getElementById('certButton').classList.remove('removevariable');
+            document.getElementById('certButton').innerHTML ='<i class="fa-solid fa-circle-plus"></i> &nbsp; Add Certificate ID';
+        }
+
+    </script>
+    <script>
+       
+        // const gallery = document.getElementsById('gallery');
+      
+
     </script>
 
 
 
     <script>
         // ************************ Drag and drop ***************** //
-        let dropArea = document.getElementById("drop-area")
+        let dropArea = document.getElementById("drop-area");
 
         // Prevent default drag behaviors
         ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -104,6 +221,8 @@
             document.getElementById('gallery').replaceChild(img, document.getElementById('gallery').childNodes[0]);
             document.getElementById('gallery').style.display ='block';
             document.getElementById('drop-area').style.display ='none';
+            document.getElementById("nameButton").disabled= false;
+            document.getElementById("certButton").disabled= false;
         }
         }
 
