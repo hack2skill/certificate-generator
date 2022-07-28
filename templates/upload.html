@@ -244,24 +244,17 @@
         }
 
         function uploadFile(file, i) {
-        var url = 'https://127.0.0.1:5000/'
-        var xhr = new XMLHttpRequest()
-        var formData = new FormData()
-        xhr.open('POST', url, true)
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+            console.log(file);
+            JSON.stringify(file);
+            console.log(file);
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:5000/");
 
-        xhr.addEventListener('readystatechange', function(e) {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-            updateProgress(i, 100) // <- Add this
-            }
-            else if (xhr.readyState == 4 && xhr.status != 200) {
-            // Error. Inform the user
-            }
-        })
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
 
-        formData.append('upload_preset', 'ujpu6gyk')
-        formData.append('file', file)
-        xhr.send(formData)
+            xhr.onload = () => console.log(xhr.responseText);
+            xhr.send(file);
         }
     </script>
 </body>
