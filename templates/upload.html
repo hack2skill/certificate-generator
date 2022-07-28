@@ -44,33 +44,32 @@
                 <button class="genCertificates" onclick="handleSubmit()">Upload Template</button>
             </div>
         </div>
+        <form action="/" method="POST"  enctype="multipart/form-data">
         <div class="right">
             <!-- Image Dropper -->
             <div class="image__dropzone">
                 <div id="drop-area" >
-                    <form action="/" method="POST"  enctype="multipart/form-data">
                         <input type="file" class="form-control" id="fileElem" name="file"accept="image/*" onchange="handleFiles(this.files)">
                         <label class="button" for="fileElem">Darg or Click to Upload Certificate <strong>Image to get Started.</strong></label>
-                        <button type="submit" id="imageUploadButton" class="d-none"> Upload Image</button>
-                    </form>
+                        
                 </div>
             </div>
             <!-- Image Display -->
                 <div id="gallery"><div>ll</div></div>
             
             <div class="csv__uploader"></div>
+        </div><div id="overlay">  </div>
+        <div id="modal"> 
+            <div style="margin-bottom: 20px;"><h4>Upload your Csv:</h4></div>
+            <div>
+                    <input class="d-none" id="variableData" name="variableData"/>
+                    <input id="fileSelect" name="csv" type="file" accept=".csv" />
+                    <button type="submit" class="genCertificates" style="margin: 20px;">Generate Certificates</button>
+            </div>
         </div>
+    </form>
     </div>
-    <div id="overlay">  </div>
-    <div id="modal"> 
-        <div style="margin-bottom: 20px;"><h4>Upload your Csv:</h4></div>
-        <div>
-            <form id="csvForm" method="POST" action="/csv_upload" enctype="multipart/form-data">
-                <input id="fileSelect" name="csv" type="file" accept=".csv" />
-                <button type="submit" class="genCertificates" style="margin: 20px;">Generate Certificates</button>
-            </form>
-        </div>
-    </div>
+    
     
 
 
@@ -180,9 +179,10 @@
                 tops: variable__tops,
                 lefts: variable__lefts,
             }
-            JSON.stringify(submitObject);
+            let myObj = JSON.stringify(submitObject);
             console.log(submitObject);
-
+            document.getElementById('variableData').value = myObj;
+            console.log(document.getElementById('variableData').value);
             document.getElementById('overlay').style.display ="flex";
             document.getElementById('modal').style.display ="flex";
         }
@@ -222,7 +222,6 @@
 
         function handleFiles(files) {
         files = [...files]
-        files.forEach(uploadFile)
         files.forEach(previewFile)
         }
 
@@ -238,10 +237,6 @@
             document.getElementById('drop-area').style.display ='none';
             document.getElementById("createVariable").disabled= false;
         }
-        }
-
-        function uploadFile(file, i) {
-            document.getElementById('imageUploadButton').click();
         }
     </script>
 </body>
