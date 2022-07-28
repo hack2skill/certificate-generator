@@ -8,6 +8,7 @@ from certificate.database import find_user, save_data
 from certificate.generator import generate
 # from certificate.image_upload import upload_to_aws 
 from flask_cors import CORS, cross_origin
+import json
 
 # from certificate.config import file_mb_max, upload_dest, extensions
 # from templates import upload
@@ -34,10 +35,12 @@ def allowed_file(filename):
 @cross_origin()
 def upload_post():
     if request.method == 'POST':
+        vdata= request.form.get('variableData')
+        # print(variableData)
         # csv = request.files["csv"]
-        name = request.form.get('name')
-        certificate_id = request.form.get('certificateId')
-        print(certificate_id,name)
+        # name = request.form.get('name')
+        # certificate_id = request.form.get('certificateId')
+        # print(certificate_id,name)
         image_path = ''
         img_file = request.files["file"]
         print(img_file)
@@ -47,10 +50,10 @@ def upload_post():
             #print(img_file.filename)
             image_path = img_file.filename
             img_file.save(os.path.join(config.upload_dest, img_file.filename))
-            user = dict()
-            user['image_path'] = image_path
-            saved_data = save_data(user)
-            print(saved_data)
+            # user = dict()
+            # user['image_path'] = image_path
+            # saved_data = save_data(user)
+            # print(saved_data)
             # image = upload_to_aws(os.path.join(config.upload_dest, img_file.filename))
             # print(image)
             # while True:
@@ -58,53 +61,12 @@ def upload_post():
             #print(type(os.path.join( config.upload_dest, img_file.filename)))
             # val = generate(os.path.join( config.upload_dest, img_file.filename), ['manish','prince'],['H2S0SSDS00001','H2S0SSDS00002'],config.upload_dest)
             # print(val)
-        # if 'csv' not in request.files:
-        #     # flash('No files found, try again.')
-        #     return redirect(request.url)    
-        # # file = request.files.getlist('files[]')    
-        # csv_file = request.files["csv"]
-        # # for csv_file in files:
-        # if csv_file and allowed_file(csv_file.filename):
-        #     # filename = secure_filename(csv_file.filename)
-        #     #print(csv_file.filename)
-        #     csv_file.save(os.path.join( config.upload_dest, csv_file.filename))  
-        #     data = read_csv(os.path.join(config.upload_dest, csv_file.filename))
-        #     for i in range(1,len(data)):
-        #         # print(data[i])
-        #         user = dict()
-        #         for j in range(len(data[0])):
-        #             user[data[0][j]] = data[i][j]
-
-        #         #print(user)
-        #         user['image_path'] = image_path
-        #         cert_id = user['certificate_id']
-        #         print(BASE_URL,cert_id)
-        #         user['certificate_link'] = f'{BASE_URL}/api/{cert_id}'
-        #         # Returns the current local date
-        #         today = date.today()
-        #         user['date_of_issue'] = str(today)
-        #         saved_data = save_data(user)
-        #         print(saved_data)
-
-        #     # flash('File(s) uploaded')
-        # return redirect('/')
-        # image = request.form.get("image")
-        # print("hi",csv)
-        # return redirect("/")
-        # return redirect("/generate")
-
-    return render_template("upload.html")
-
-# @app.route("/")
-
-@app.route('/csv_upload', methods=['POST'])
-@cross_origin()
-def upload_csv():
-    if request.method == 'POST':
         if 'csv' not in request.files:
+            # flash('No files found, try again.')
             return redirect(request.url)    
+        # file = request.files.getlist('files[]')    
         csv_file = request.files["csv"]
-        print(csv_file)
+        # for csv_file in files:
         if csv_file and allowed_file(csv_file.filename):
             # filename = secure_filename(csv_file.filename)
             #print(csv_file.filename)
@@ -117,15 +79,25 @@ def upload_csv():
                     user[data[0][j]] = data[i][j]
 
                 #print(user)
-                # user['image_path'] = image_path
+                user['image_path'] = image_path
+                print(type(vdata),vdata)
+                variableData = json.loads(vdata)
+                user['variableData'] = variableData
+                print(type(user['variableData']))
                 cert_id = user['certificate_id']
                 print(BASE_URL,cert_id)
                 user['certificate_link'] = f'{BASE_URL}/api/{cert_id}'
                 # Returns the current local date
                 today = date.today()
                 user['date_of_issue'] = str(today)
+                print(user)
                 saved_data = save_data(user)
                 print(saved_data)
+            
+            # for i in range(len(variableData)):
+            #     for j in range(len(variableData['variables'])):
+            #         vary = variableData['variables'][i]
+            #         user[f"{vary}-"]
 
             # flash('File(s) uploaded')
         return redirect('/')
@@ -135,6 +107,47 @@ def upload_csv():
         # return redirect("/generate")
 
     return render_template("upload.html")
+
+# @app.route("/")
+
+# @app.route('/csv_upload', methods=['POST'])
+# @cross_origin()
+# def upload_csv():
+#     if request.method == 'POST':
+#         if 'csv' not in request.files:
+#             return redirect(request.url)    
+#         csv_file = request.files["csv"]
+#         print(csv_file)
+#         if csv_file and allowed_file(csv_file.filename):
+#             # filename = secure_filename(csv_file.filename)
+#             #print(csv_file.filename)
+#             csv_file.save(os.path.join( config.upload_dest, csv_file.filename))  
+#             data = read_csv(os.path.join(config.upload_dest, csv_file.filename))
+#             for i in range(1,len(data)):
+#                 # print(data[i])
+#                 user = dict()
+#                 for j in range(len(data[0])):
+#                     user[data[0][j]] = data[i][j]
+
+#                 #print(user)
+#                 # user['image_path'] = image_path
+#                 cert_id = user['certificate_id']
+#                 print(BASE_URL,cert_id)
+#                 user['certificate_link'] = f'{BASE_URL}/api/{cert_id}'
+#                 # Returns the current local date
+#                 today = date.today()
+#                 user['date_of_issue'] = str(today)
+#                 saved_data = save_data(user)
+#                 print(saved_data)
+
+#             # flash('File(s) uploaded')
+#         return redirect('/')
+#         # image = request.form.get("image")
+#         # print("hi",csv)
+#         # return redirect("/")
+#         # return redirect("/generate")
+
+#     return render_template("upload.html")
 # @app.route('/generate', methods=['GET','POST'])
 # def generate_certificate():
 #     if request.method == 'POST':
@@ -146,12 +159,16 @@ def upload_csv():
 #     return render_template("generate.html")
 @app.route('/api/<certificate_id>')
 def show_image(certificate_id):
-    name, image_path, name_origin_coordinates, certificate_id_origin_coordinates = find_user(certificate_id)
-    # value = generate(f"uploads_folder/{image_path}", name, certificate_id, name_origin_coordinates = (650, 2650), certificate_id_origin_coordinates = (2100, 3600))
-    value = generate(f"uploads_folder/{image_path}", name, certificate_id, name_origin_coordinates= name_origin_coordinates, certificate_id_origin_coordinates = certificate_id_origin_coordinates)
-    print(value)
+    try:
+        user = find_user(certificate_id)
+        # name, image_path, name_origin_coordinates, certificate_id_origin_coordinates = find_user(certificate_id)
+        # value = generate(f"uploads_folder/{image_path}", name, certificate_id, name_origin_coordinates = (650, 2650), certificate_id_origin_coordinates = (2100, 3600))
+        value = generate(user)
+        # print(value)
     
-    return(certificate_id)
+        return(certificate_id)
+    except TypeError:
+        return "User Not Found"
     
 def server():
     app.run(debug=True)

@@ -18,12 +18,12 @@ def save_data(data):
     saved_user = user.insert_one(data)
     return saved_user
 
-def find_save_data(data):
-    saved_user = user.find_one_and_update(data)
-    return saved_user
-
 def find_user(certificate_id):
-    print(certificate_id)
-    found_user = user.find_one({ "certificate_id": certificate_id})
-    print(found_user)
-    return found_user['name'],found_user['image_path'],found_user['name_origin_coordinates'],found_user['certificate_id_origin_coordinates'],
+    try:
+        # print(certificate_id)
+        found_user = user.find_one({ "certificate_id": certificate_id})
+        # print(found_user)
+        return found_user
+        # return found_user['name'],found_user['image_path'],found_user['variableData']
+    except TypeError:
+        return None
