@@ -48,9 +48,10 @@
             <!-- Image Dropper -->
             <div class="image__dropzone">
                 <div id="drop-area" >
-                    <form action="" method="POST" enctype="multipart/form-data">
-                        <input type="file" id="fileElem"accept="image/*" onchange="handleFiles(this.files)">
+                    <form action="" method="POST" >
+                        <input type="file" class="form-control" id="fileElem"accept="image/*" onchange="handleFiles(this.files)">
                         <label class="button" for="fileElem">Darg or Click to Upload Certificate <strong>Image to get Started.</strong></label>
+                        <button type="submit" id="imageUploadButton" class="d-none"> Upload Image</button>
                     </form>
                 </div>
             </div>
@@ -186,7 +187,7 @@
             document.getElementById('modal').style.display ="flex";
         }
     </script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script>
         // ************************ Drag and drop ***************** //
         let dropArea = document.getElementById("drop-area");
@@ -241,17 +242,7 @@
         }
 
         function uploadFile(file, i) {
-            console.log(file);
-            JSON.stringify(file);
-            console.log(file);
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://127.0.0.1:5000/");
-
-            xhr.setRequestHeader("Accept", "application/json");
-            xhr.setRequestHeader("Content-Type", "application/json");
-
-            xhr.onload = () => console.log(xhr.responseText);
-            xhr.send(file);
+            document.getElementById('imageUploadButton').click();
         }
     </script>
 </body>

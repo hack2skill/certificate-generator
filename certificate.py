@@ -7,12 +7,12 @@ from certificate.csv_reading import read_csv
 from certificate.database import find_user, save_data
 from certificate.generator import generate
 # from certificate.image_upload import upload_to_aws 
-# from flask_cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 
 # from certificate.config import file_mb_max, upload_dest, extensions
 # from templates import upload
 app = Flask(__name__)
-# cors = CORS(app)
+cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
  
 # Use load_env to trace the path of .env:
@@ -31,7 +31,7 @@ def allowed_file(filename):
 # def upload():
     
 @app.route('/', methods=['GET','POST'])
-# @cross_origin()
+@cross_origin()
 def upload_post():
     if request.method == 'POST':
         # csv = request.files["csv"]
@@ -98,7 +98,7 @@ def upload_post():
 # @app.route("/")
 
 @app.route('/csv_upload', methods=['POST'])
-# @cross_origin()
+@cross_origin()
 def upload_csv():
     if request.method == 'POST':
         if 'csv' not in request.files:
