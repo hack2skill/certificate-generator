@@ -18,28 +18,23 @@
             <div class="heading">Action Panel</div>
             <div class="variable__list">
                 <button class="createVariable" id="createVariable"onclick="createVariable()" disabled>Create Variable &nbsp; <i class="fa-solid fa-circle-plus"></i></button>
+                <div class="alert-info"><small><strong><i class="fa-solid fa-circle-info"></i> Note:</strong> Variables are the column names of your csv file.</div>
             </div>
-            <br/>
-            
             <hr/>
             <div  class="variable__list">
                 <!-- Hidden Input to store variable id -->
                 <input id="currentVariable" value="" type="text" class="d-none"/>
                 <div class="heading">Customize Text:</div>
-                <br/>
                 <h5>Select Font:</h5>
-                <select id="font" onchange="changeFont(this)">
+                <select id="font" class=" form-control" onchange="changeFont(this)">
                     <option>Poppins</option>
                     <option>Roberto</option>
                     <option>Arial</option>
                 </select>
-                <br/>
-                <h5>Font Size:</h5> <input type="number" id="size" value="11" onchange="changeSize(this)"/>
-                <br/>
+                <h5>Font Size:</h5> <input class="form-control" type="number" id="size" value="11" onchange="changeSize(this)"/>
                 <div class="flex"><h5>Colour:</h5> &nbsp;&nbsp;&nbsp; <input type="color" id="color" onchange="changeColor(this)"/></div>
-                <br/>
                 <h5>Set Alignment:</h5>
-                <select id="align"  onchange="changeAlign(this)">
+                <select id="align" class="form-control" onchange="changeAlign(this)">
                     <option>Left</option>
                     <option>Right</option>
                     <option>Center</option>
@@ -109,8 +104,10 @@
             variable.style.fontSize='11px';
             variable.style.color='#000000';
             variable.style.textAlign='left';
+            variable.maxLength=20;
 
             // Event listeners on input field
+
             variable.addEventListener("mousedown",()=>{
                 document.getElementById('currentVariable').value= variable.id;
             variable.addEventListener("mousemove",onDrag);
