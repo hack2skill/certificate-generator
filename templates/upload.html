@@ -110,8 +110,10 @@
             variable.style.fontSize='11px';
             variable.style.color='#000000';
             variable.style.textAlign='left';
+            variable.maxLength=15;
 
             // Event listeners on input field
+
             variable.addEventListener("mousedown",()=>{
                 document.getElementById('currentVariable').value= variable.id;
             variable.addEventListener("mousemove",onDrag);
