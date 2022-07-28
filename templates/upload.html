@@ -17,24 +17,29 @@
             <div class="branding"><a href="https://hack2skill.com"><img class="brandlogo" src="../static/logo.png"/></a></div>
             <div class="heading">Action Panel</div>
             <div class="variable__list">
-                <button class="setvariable" id="nameButton" onclick="setNameImage()" disabled><i class="fa-solid fa-circle-plus"></i> &nbsp; Add Name</button>
-                <button class="setvariable" id="certButton"  onclick="setCertImage()" disabled><i class="fa-solid fa-circle-plus"></i> &nbsp; Add Certificate ID</button>
+                <button class="createVariable" id="createVariable"onclick="createVariable()" disabled>Create Variable &nbsp; <i class="fa-solid fa-circle-plus"></i></button>
             </div>
             <br/>
             
             <hr/>
             <div  class="variable__list">
+                <!-- Hidden Input to store variable id -->
+                <input id="currentVariable" value="" type="text" class="d-none"/>
                 <div class="heading">Customize Text:</div>
                 <br/>
                 <h5>Select Font:</h5>
-                <select id="font">
+                <select id="font" onchange="changeFont(this)">
                     <option>Poppins</option>
                     <option>Roberto</option>
                     <option>Arial</option>
                 </select>
                 <br/>
+                <h5>Font Size:</h5> <input type="number" id="size" value="11" onchange="changeSize(this)"/>
+                <br/>
+                <div class="flex"><h5>Colour:</h5> &nbsp;&nbsp;&nbsp; <input type="color" id="color" onchange="changeColor(this)"/></div>
+                <br/>
                 <h5>Set Alignment:</h5>
-                <select id="align">
+                <select id="align"  onchange="changeAlign(this)">
                     <option>Left</option>
                     <option>Right</option>
                     <option>Center</option>
@@ -79,134 +84,111 @@
 
     <!-- Javascript -->
     <script>
+        const changeAlign=(e)=>{
+            const current_id = document.getElementById('currentVariable').value;
+            document.getElementById(current_id).style.textAlign = e.value;
+        }
+        const changeColor=(e)=>{
+            const current_id = document.getElementById('currentVariable').value;
+            document.getElementById(current_id).style.color = e.value;
+        }
+        const changeSize=(e)=>{
+            const current_id = document.getElementById('currentVariable').value;
+            document.getElementById(current_id).style.fontSize = e.value + "px";
+        }
+        const changeFont=(e)=>{
+            const current_id = document.getElementById('currentVariable').value;
+            document.getElementById(current_id).style.fontFamily = e.value;
+        }
+        const createVariable =()=>{
+            // Creating input field
+            let variable = document.createElement('input');
+            variable.id = document.getElementById('gallery').children.length;
+            variable.classList.add('variable');
+            variable.style.fontFamily ='poppins';
+            variable.style.fontSize='11px';
+            variable.style.color='#000000';
+            variable.style.textAlign='left';
+
+            // Event listeners on input field
+            variable.addEventListener("mousedown",()=>{
+                document.getElementById('currentVariable').value= variable.id;
+            variable.addEventListener("mousemove",onDrag);
+            })
+            document.addEventListener("mouseup",()=>{
+            variable.removeEventListener("mousemove",onDrag);
+            });
+
+            // Delete The input field
+            variable.onkeydown = function() {
+                var key = event.keyCode || event.charCode;
+                let i = parseInt(variable.id)+1;
+                let len = document.getElementById('gallery').children.length;
+                if(key == 46 )
+                    {
+                        variable.remove();
+                        for(i;i<len;i++){
+                            document.getElementById(i).id = i-1;
+                        }
+                    }
+            };
+
+            document.getElementById('gallery').appendChild(variable);
+
+            // On Drag Function
+            function onDrag(e){
+                let getStyle= window.getComputedStyle(variable);
+                let left = parseInt(getStyle.left);
+                let top = parseInt(getStyle.top);
+                variable.style.left = `${(e.movementX +left)}px`;
+                variable.style.top = `${(top + e.movementY)}px`;
+            }
+        }
+    </script>
+    <script>
         const closeModal =() =>{
             document.getElementById('overlay').style.display='none';
         }
         const handleSubmit=()=>{
-            let nameLeft, nameTop, certLeft,certTop;
-            console.log(document.getElementById('cert').getBoundingClientRect().left)
-            if(document.getElementById('nameVariable')){
-                nameLeft = document.getElementById('nameVariable').getBoundingClientRect().left - document.getElementById('cert').getBoundingClientRect().left;
-                nameTop = document.getElementById('nameVariable').getBoundingClientRect().top - document.getElementById('cert').getBoundingClientRect().top;
-            }
-            if(document.getElementById('certVariable')){
-                certLeft = document.getElementById('certVariable').getBoundingClientRect().left - document.getElementById('cert').getBoundingClientRect().left;
-                certTop = document.getElementById('certVariable').getBoundingClientRect().top - document.getElementById('cert').getBoundingClientRect().top;
+            let variables =[];
+            let variable__fonts =[];
+            let variable__colors=[];
+            let variable__sizes=[];
+            let variable__aligns=[];
+            let variable__tops=[];
+            let variable__lefts=[];
+            let len =document.getElementById('gallery').children.length;
+            let gallery__top =document.getElementById('gallery').getBoundingClientRect().top;
+            let gallery__left =document.getElementById('gallery').getBoundingClientRect().left;
+            for(let i=1;i<len;i++){
+                console.log("in for loop")
+                const inputVariable = document.getElementById(i);
+                console.log(inputVariable);
+                variables.push(inputVariable.value);
+                variable__fonts.push(inputVariable.style.fontFamily);
+                variable__colors.push(inputVariable.style.color);
+                variable__sizes.push(inputVariable.style.fontSize);
+                variable__aligns.push(inputVariable.style.textAlign);
+                variable__tops.push(inputVariable.getBoundingClientRect().top -gallery__top );
+                variable__lefts.push(inputVariable.getBoundingClientRect().left -gallery__left);
             }
 
             let submitObject ={
-                font: document.getElementById('font').value,
-                align: document.getElementById('align').value,
-                nameLeft: nameLeft,
-                nameTop: nameTop,
-                certLeft: certLeft,
-                certTop: certTop
+                variables: variables,
+                fonts: variable__fonts,
+                colors: variable__colors,
+                sizes: variable__sizes,
+                aligns: variable__aligns,
+                tops: variable__tops,
+                lefts: variable__lefts,
             }
             JSON.stringify(submitObject);
             console.log(submitObject);
+
             document.getElementById('overlay').style.display ="flex";
             document.getElementById('modal').style.display ="flex";
         }
     </script>
-    <script>
-        const setNameImage= ()=>{
-
-            // adding Dragable, Scaleable name image
-            let img_Div = document.createElement('div');
-            let moveable_Div = document.createElement('div')
-            let img = document.createElement('img');
-            img.src = '../static/name.png';
-            img_Div.id ='nameVariable';
-            moveable_Div.id ='nameMove';
-            moveable_Div.innerHTML='<i class="fa-solid fa-grip-lines-vertical"></i>';
-            img_Div.appendChild(moveable_Div);
-            img_Div.appendChild(img);
-
-            moveable_Div.addEventListener("mousedown",()=>{
-            moveable_Div.addEventListener("mousemove",onDrag);
-            })
-            document.addEventListener("mouseup",()=>{
-            moveable_Div.removeEventListener("mousemove",onDrag);
-            })
-            document.getElementById('gallery').appendChild(img_Div);
-
-            // On Drag Function
-            function onDrag(e){
-                let getStyle= window.getComputedStyle(img_Div);
-                let left = parseInt(getStyle.left);
-                let top = parseInt(getStyle.top);
-                img_Div.style.left = `${(e.movementX +left)}px`;
-                img_Div.style.top = `${(top + e.movementY)}px`;
-            }
-            document.getElementById('nameButton').classList.remove('setvariable');
-            document.getElementById('nameButton').classList.add('removevariable');
-            document.getElementById('nameButton').innerHTML = '<i class="fa-solid fa-circle-minus"></i> &nbsp; Remove Name';
-            document.getElementById('nameButton').onclick = function() { removeNameImg() };
-        }
-
-        const removeNameImg =() =>{
-           const img_Div=  document.getElementById('nameVariable');
-            document.getElementById('gallery').removeChild(img_Div);
-            document.getElementById('nameButton').onclick = function() { setNameImage() };
-            document.getElementById('nameButton').classList.add('setvariable');
-            document.getElementById('nameButton').classList.remove('removevariable');
-            document.getElementById('nameButton').innerHTML ='<i class="fa-solid fa-circle-plus"></i> &nbsp; Add Name';
-        }
-        
-    </script>
-    <script>
-        const setCertImage= ()=>{
-
-            // adding Dragable, Scaleable name image
-            let img_Div = document.createElement('div');
-            let moveable_Div = document.createElement('div')
-            let img = document.createElement('img');
-            img.src = '../static/cert.png';
-            img_Div.id ='certVariable';
-            moveable_Div.id ='certMove';
-            moveable_Div.innerHTML='<i class="fa-solid fa-grip-lines-vertical"></i>';
-            img_Div.appendChild(moveable_Div);
-            img_Div.appendChild(img);
-
-            moveable_Div.addEventListener("mousedown",()=>{
-            moveable_Div.addEventListener("mousemove",onDrag);
-            })
-            document.addEventListener("mouseup",()=>{
-            moveable_Div.removeEventListener("mousemove",onDrag);
-            })
-            document.getElementById('gallery').appendChild(img_Div);
-
-            // On Drag Function
-            function onDrag(e){
-                let getStyle= window.getComputedStyle(img_Div);
-                let left = parseInt(getStyle.left);
-                let top = parseInt(getStyle.top);
-                img_Div.style.left = `${(e.movementX +left)}px`;
-                img_Div.style.top = `${(top + e.movementY)}px`;
-            }
-            document.getElementById('certButton').classList.remove('setvariable');
-            document.getElementById('certButton').classList.add('removevariable');
-            document.getElementById('certButton').innerHTML = '<i class="fa-solid fa-circle-minus"></i> &nbsp; Remove ID';
-            document.getElementById('certButton').onclick = function() { removeCertImg() };
-        }
-
-        const removeCertImg =() =>{
-            document.getElementById('certVariable').remove();
-            document.getElementById('certButton').onclick = function() { setCertImage() };
-            document.getElementById('certButton').classList.add('setvariable');
-            document.getElementById('certButton').classList.remove('removevariable');
-            document.getElementById('certButton').innerHTML ='<i class="fa-solid fa-circle-plus"></i> &nbsp; Add Certificate ID';
-        }
-
-    </script>
-    <script>
-       
-        // const gallery = document.getElementsById('gallery');
-      
-
-    </script>
-
-
 
     <script>
         // ************************ Drag and drop ***************** //
@@ -257,8 +239,7 @@
             document.getElementById('gallery').replaceChild(img, document.getElementById('gallery').childNodes[0]);
             document.getElementById('gallery').style.display ='block';
             document.getElementById('drop-area').style.display ='none';
-            document.getElementById("nameButton").disabled= false;
-            document.getElementById("certButton").disabled= false;
+            document.getElementById("createVariable").disabled= false;
         }
         }
 
