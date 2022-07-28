@@ -64,8 +64,8 @@
     <div id="modal"> 
         <div style="margin-bottom: 20px;"><h4>Upload your Csv:</h4></div>
         <div>
-            <form id="csvForm" >
-                <input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+            <form id="csvForm" method="POST" action="/csv_upload" enctype="multipart/form-data">
+                <input id="fileSelect" name="csv" type="file" accept=".csv" />
                 <button type="submit" class="genCertificates" style="margin: 20px;">Generate Certificates</button>
             </form>
         </div>
@@ -73,8 +73,7 @@
     
 
 
-
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 
 
@@ -264,7 +263,7 @@
         }
 
         function uploadFile(file, i) {
-        var url = 'https://api.cloudinary.com/v1_1/joezimim007/image/upload'
+        var url = 'https://127.0.0.1:5000/'
         var xhr = new XMLHttpRequest()
         var formData = new FormData()
         xhr.open('POST', url, true)
