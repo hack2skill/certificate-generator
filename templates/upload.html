@@ -18,9 +18,8 @@
             <div class="heading">Action Panel</div>
             <div class="variable__list">
                 <button class="createVariable" id="createVariable"onclick="createVariable()" disabled>Create Variable &nbsp; <i class="fa-solid fa-circle-plus"></i></button>
-                <div class="alert-info"><small><strong><i class="fa-solid fa-circle-info"></i> Note:</strong> Variables are the column names of your csv file.</div>
+                <div class="alert-info"><small><strong><i class="fa-solid fa-circle-info"></i> Note:</strong> Variables are the column names of your csv file. It is essential that one column of the csv is <strong>certificate_id</strong>. </div>
             </div>
-            <hr/>
             <div  class="variable__list">
                 <!-- Hidden Input to store variable id -->
                 <input id="currentVariable" value="" type="text" class="d-none"/>
@@ -100,10 +99,10 @@
             let variable = document.createElement('input');
             variable.id = document.getElementById('gallery').children.length;
             variable.classList.add('variable');
-            variable.style.fontFamily ='poppins';
-            variable.style.fontSize='11px';
-            variable.style.color='#000000';
-            variable.style.textAlign='left';
+            variable.style.fontFamily = document.getElementById('font').value;
+            variable.style.fontSize= document.getElementById('size').value+ "px";
+            variable.style.color=document.getElementById('color').value;
+            variable.style.textAlign=document.getElementById('align').value;
             variable.maxLength=20;
 
             // Event listeners on input field
@@ -157,17 +156,16 @@
             let len =document.getElementById('gallery').children.length;
             let gallery__top =document.getElementById('gallery').getBoundingClientRect().top;
             let gallery__left =document.getElementById('gallery').getBoundingClientRect().left;
+
             for(let i=1;i<len;i++){
-                console.log("in for loop")
                 const inputVariable = document.getElementById(i);
-                console.log(inputVariable);
                 variables.push(inputVariable.value);
                 variable__fonts.push(inputVariable.style.fontFamily);
-                variable__colors.push(inputVariable.style.color);
+                variable__colors.push((inputVariable.style.color).slice(3));
                 variable__sizes.push(inputVariable.style.fontSize);
                 variable__aligns.push(inputVariable.style.textAlign);
-                variable__tops.push((inputVariable.getBoundingClientRect().top -gallery__top)+'px' );  
-                variable__lefts.push((inputVariable.getBoundingClientRect().left -gallery__left)+'px' );  
+                variable__tops.push(inputVariable.getBoundingClientRect().top -gallery__top);  
+                variable__lefts.push(inputVariable.getBoundingClientRect().left -gallery__left);  
             }
 
             let submitObject ={
