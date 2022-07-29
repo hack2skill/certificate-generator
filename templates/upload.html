@@ -166,8 +166,8 @@
                 variable__colors.push(inputVariable.style.color);
                 variable__sizes.push(inputVariable.style.fontSize);
                 variable__aligns.push(inputVariable.style.textAlign);
-                variable__tops.push(inputVariable.getBoundingClientRect().top -gallery__top );
-                variable__lefts.push(inputVariable.getBoundingClientRect().left -gallery__left);
+                variable__tops.push((inputVariable.getBoundingClientRect().top -gallery__top)+'px' );  
+                variable__lefts.push((inputVariable.getBoundingClientRect().left -gallery__left)+'px' );  
             }
 
             let submitObject ={
