@@ -50,10 +50,8 @@ def users_mails(image_path):
         for user_data in user_datas:
             email = user_data['email']
             certificate_link = user_data['certificate_link']
-
             email_certificate_link_array.append([email, certificate_link])
             # certificate_link_array.append(certificate_link, )
-
         print(email_certificate_link_array)
         # return (''.join(email_array),''.join(certificate_link_array))
         return email_certificate_link_array

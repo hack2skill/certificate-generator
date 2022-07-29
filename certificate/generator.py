@@ -41,14 +41,22 @@ def generate(user):
       aligns = variableData['aligns']
       lefts = variableData['lefts']
       tops = variableData['tops']
-      print(colors)
       for i in range(len(variables)):
             vary = user[variables[i]]
             # print(vary, int(sizes[i].split('p')[0]),f'{fonts[i]}.ttf')
-            myFont = ImageFont.truetype(f'{fonts[i]}.ttf', int(sizes[i].split('p')[0])) #TODO: changing fonts
+            myFont = ImageFont.truetype('arial.ttf', int(sizes[i].split('p')[0])) #TODO: changing fonts
       #         print(myFont)
             # Add Text to an image
-            I1.text((int(lefts[i]),int(tops[i])), vary, font=myFont, fill = colors[i]) #TODO: changing colors
+            # color_list = colors[i][1:-1].split(',')
+            # print(color_list)
+            # color_tuple = []
+            # for color in color_list:
+            #       col = color.strip()
+            #       print(col)
+            #       color_tuple.append(int(col))
+            # fill_color = tuple(color_tuple)
+            # print(fill_color)
+            I1.text((int(lefts[i]),int(tops[i])), vary, font=myFont, fill =(0,0,0)) #TODO: changing colors
       # I1.text(certificate_id_origin_coordinates, certificate_id, font=myFont, fill =certificate_id_font_color)
 #         # I1.text((100, 120), "Nice kitty", fill =(255, 0, 0))
         

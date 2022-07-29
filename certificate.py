@@ -184,7 +184,7 @@ def show_image(certificate_id):
         value = generate(user)
         print(value)
     
-        return True
+        return "Loading Image Viewer"
     except TypeError:
         return "User Not Found"
 
