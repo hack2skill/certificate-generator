@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request
 from certificate import config
 from certificate.csv_reading import read_csv
-from certificate.database import find_user, save_data
+from certificate.database import find_certificates, find_user, save_data
 from certificate.generator import generate
 # from certificate.image_upload import upload_to_aws 
 from flask_cors import CORS, cross_origin
@@ -164,12 +164,20 @@ def show_image(certificate_id):
         # name, image_path, name_origin_coordinates, certificate_id_origin_coordinates = find_user(certificate_id)
         # value = generate(f"uploads_folder/{image_path}", name, certificate_id, name_origin_coordinates = (650, 2650), certificate_id_origin_coordinates = (2100, 3600))
         value = generate(user)
-        # print(value)
+        print(value)
     
-        return(certificate_id)
+        return True
     except TypeError:
         return "User Not Found"
-    
+
+@app.route('/show_certificates/<email>')
+def show_certificates(email):
+    try:
+        certificates_array = find_certificates(email)
+        return certificates_array
+    except TypeError:
+        return "User Not Found"
+
 def server():
     app.run(debug=True)
 

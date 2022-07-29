@@ -27,3 +27,17 @@ def find_user(certificate_id):
         # return found_user['name'],found_user['image_path'],found_user['variableData']
     except TypeError:
         return None
+
+def find_certificates(email):
+    try:
+        certificates_array = []
+        user_datas = user.find({ "email": email}, { "certificate_link":1})
+        for user_data in user_datas:
+            certificate_link = user_data['certificate_link']
+            certificates_array.append(certificate_link)
+
+        print(certificates_array)
+        # return ''.join(certificates_array)
+        return certificates_array
+    except TypeError:
+        return None

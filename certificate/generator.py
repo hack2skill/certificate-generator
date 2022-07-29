@@ -44,17 +44,18 @@ def generate(user):
       print(colors)
       for i in range(len(variables)):
             vary = user[variables[i]]
-            print(vary)
-            myFont = ImageFont.truetype('arial.ttf', int(sizes[i].split('p')[0]))
+            # print(vary, int(sizes[i].split('p')[0]),f'{fonts[i]}.ttf')
+            myFont = ImageFont.truetype(f'{fonts[i]}.ttf', int(sizes[i].split('p')[0])) #TODO: changing fonts
       #         print(myFont)
             # Add Text to an image
-            I1.text((int(lefts[i]),int(tops[i])), vary, font=myFont, fill = (255, 0, 0))
+            I1.text((int(lefts[i]),int(tops[i])), vary, font=myFont, fill = colors[i]) #TODO: changing colors
       # I1.text(certificate_id_origin_coordinates, certificate_id, font=myFont, fill =certificate_id_font_color)
 #         # I1.text((100, 120), "Nice kitty", fill =(255, 0, 0))
         
 #         # Display edited image
       img.show()
-      return img.info
+      print(img.info)
+      return img
 #         # Save the edited image
 #         #img.save(f'{edited_path}/{name}-edited-image.png')
 #     return True
