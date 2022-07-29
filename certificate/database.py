@@ -2,6 +2,8 @@ import pymongo
 
 from dotenv import load_dotenv
 import os
+
+import certificate
  
 # Use load_env to trace the path of .env:
 load_dotenv('.env') 
@@ -39,5 +41,21 @@ def find_certificates(email):
         print(certificates_array)
         # return ''.join(certificates_array)
         return certificates_array
+    except TypeError:
+        return None
+def users_mails(image_path):
+    try:
+        email_certificate_link_array = []
+        user_datas = user.find({ "image_path": image_path}, { "email":1, "certificate_link":1})
+        for user_data in user_datas:
+            email = user_data['email']
+            certificate_link = user_data['certificate_link']
+
+            email_certificate_link_array.append([email, certificate_link])
+            # certificate_link_array.append(certificate_link, )
+
+        print(email_certificate_link_array)
+        # return (''.join(email_array),''.join(certificate_link_array))
+        return email_certificate_link_array
     except TypeError:
         return None

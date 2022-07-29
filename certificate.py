@@ -3,12 +3,15 @@ from datetime import date
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request
 from certificate import config
+import certificate
 from certificate.csv_reading import read_csv
-from certificate.database import find_certificates, find_user, save_data
+from certificate.database import find_certificates, find_user, save_data, users_mails
 from certificate.generator import generate
 # from certificate.image_upload import upload_to_aws 
 from flask_cors import CORS, cross_origin
 import json
+
+from certificate.mailers import send_email
 
 # from certificate.config import file_mb_max, upload_dest, extensions
 # from templates import upload
@@ -100,7 +103,9 @@ def upload_post():
             #         user[f"{vary}-"]
 
             # flash('File(s) uploaded')
-        return redirect('/')
+        return redirect(f'/mailer/{image_path}')
+        #     image_path: image_path
+        # })
         # image = request.form.get("image")
         # print("hi",csv)
         # return redirect("/")
@@ -108,7 +113,20 @@ def upload_post():
 
     return render_template("upload.html")
 
-# @app.route("/")
+@app.route('/mailer/<image_path>', methods=['GET','POST'])
+def mail_post(image_path):
+    if request.method == 'POST':
+        subject= request.form.get('subject')
+        body= request.form.get('body')
+        received_array = users_mails(image_path)
+        for element in received_array:
+            email = element[0]
+            certificate_link = element[1]
+            val = send_email(email, certificate_link, subject, body)
+            print(val)
+
+        return redirect("/")
+    return render_template("mailer.html") 
 
 # @app.route('/csv_upload', methods=['POST'])
 # @cross_origin()
