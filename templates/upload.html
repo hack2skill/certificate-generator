@@ -165,7 +165,14 @@
                 variable__sizes.push(inputVariable.style.fontSize);
                 variable__aligns.push(inputVariable.style.textAlign);
                 variable__tops.push(inputVariable.getBoundingClientRect().top -gallery__top);  
-                variable__lefts.push(inputVariable.getBoundingClientRect().left -gallery__left);  
+                if(inputVariable.style.textAlign === 'left'){
+                    variable__lefts.push(inputVariable.getBoundingClientRect().left -gallery__left);  
+                }else if(inputVariable.style.textAlign === 'right'){
+                    console.log("variable width:",inputVariable.clientWidth);
+                    variable__lefts.push((inputVariable.getBoundingClientRect().left + inputVariable.clientWidth ) -gallery__left);  
+                }else if(inputVariable.style.textAlign === 'center'){
+                    variable__lefts.push((inputVariable.getBoundingClientRect().left + (inputVariable.clientWidth/2)) -gallery__left);  
+                }
             }
 
             let submitObject ={
