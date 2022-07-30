@@ -30,6 +30,14 @@ def find_user(certificate_id):
     except TypeError:
         return None
 
+def find_user_details(certificate_id):
+    try:
+        user_data = user.find_one({ "certificate_id": certificate_id})
+        # return ''.join(certificates_array)
+        return user_data
+    except TypeError:
+        return None
+
 def find_certificates(email):
     try:
         certificates_array = []

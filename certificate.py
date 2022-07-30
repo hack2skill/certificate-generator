@@ -5,7 +5,7 @@ from flask import Flask, flash, redirect, render_template, request
 from certificate import config
 import certificate
 from certificate.csv_reading import read_csv
-from certificate.database import find_certificates, find_user, save_data, users_mails
+from certificate.database import find_certificates, find_user, find_user_details, save_data, users_mails
 from certificate.generator import generate
 # from certificate.image_upload import upload_to_aws 
 from flask_cors import CORS, cross_origin
@@ -175,16 +175,20 @@ def mail_post(image_path):
 
 #         return redirect("/generate")
 #     return render_template("generate.html")
-@app.route('/api/<certificate_id>')
+@app.route('/api/<certificate_id>', methods=['GET','POST'])
 def show_image(certificate_id):
+    if request.method == 'POST':
+        pass #TODO: downloading and sharing options
     try:
-        user = find_user(certificate_id)
+        user = find_user_details(certificate_id)
+        # user = find_user(certificate_id)
         # name, image_path, name_origin_coordinates, certificate_id_origin_coordinates = find_user(certificate_id)
         # value = generate(f"uploads_folder/{image_path}", name, certificate_id, name_origin_coordinates = (650, 2650), certificate_id_origin_coordinates = (2100, 3600))
-        value = generate(user)
-        print(value)
-    
-        return "Loading Image Viewer"
+        # value = generate(user)
+        # print(user)
+        if(user==None):
+            return "User Not Found"
+        return render_template("certificate.html", user = user )
     except TypeError:
         return "User Not Found"
 
