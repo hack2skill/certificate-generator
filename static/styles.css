@@ -8,6 +8,9 @@
 .container {
     display: flex;
     background-color: #F7FAFF;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .branding,
@@ -215,4 +218,15 @@ input[type='color'] {
     border: 1px solid #ced4da;
     border-radius: 5px;
     margin-bottom: 15px;
+}
+
+.card {
+    width: 500px;
+    height: fit-content;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
 }

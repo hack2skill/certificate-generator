@@ -5,13 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mail</title>
-</head>
-<body>
-    <form action="" method="POST">
-        <input type="text" name="subject" value="Subject">
-        <input type="text" name="body" value="Body">
-        <button type="submit">Submit</button>
+    <link rel="stylesheet" href="../static/styles.css"/>
 
-    </form>
+</head>
+<body class="container">
+    <div class="card">
+        <h3>Send Certificates through Mail:</h3>
+        <br/>
+        <hr/>
+        <br/>
+        <form action="" method="POST" >
+            <div>
+                <input type="text" class="form-control" name="subject" placeholder="Subject">
+            </div>
+            <div>
+                <textarea type="text" class="form-control" name="body" placeholder="Body" style="width: 100%; height:300px;"></textarea>
+            </div>
+            <button type="submit" class="genCertificates">Send Mails</button>
+    
+        </form>
+    </div>
 </body>
 </html>
